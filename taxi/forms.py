@@ -1,7 +1,7 @@
 import re
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from taxi.models import Driver
+from taxi.models import Driver, Car
 
 
 class DriverCreationForm(UserCreationForm):
@@ -36,3 +36,15 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 "letters followed by 5 digits (e.g., ABC12345)."
             )
         return license_number
+
+
+class CarForm(forms.ModelForm):
+    drivers = forms.ModelMultipleChoiceField(
+        queryset=Driver.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+    )
+
+    class Meta:
+        model = Car
+        fields = "__all__"
